@@ -30,10 +30,12 @@ int main(int argc,char** argv)
 {
 	printf("nocsim simulator\n");
 	std::vector<unsigned> sizes(3,0);
-	sizes[0] = 10;
-	sizes[1] = 15;
-	sizes[2] = 12;
+	sizes[0] = 3;
+	sizes[1] = 4;
+	sizes[2] = 5;
 	network::TorusNetwork network(sizes);
 	network.build(4,4);
+	network.print();
+	network.runRandomTrafficLoad(10,0.3);
 	return 0;
 }

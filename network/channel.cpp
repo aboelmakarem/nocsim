@@ -24,33 +24,24 @@ SOFTWARE.
 */
 
 #include "channel.h"
-#include "router.h"
+#include "node.h"
 #include <stdio.h>
+#include <cassert>
 
 namespace network
 {
-	Channel::Channel(unsigned width,unsigned bufferSize,Router* start,Router* end) : width_(width), bufferSize_(bufferSize), start_(start), end_(end) {}
+	Channel::Channel(unsigned width,unsigned bufferSize,Node* start,Node* end) : width_(width), bufferSize_(bufferSize), start_(start), end_(end)
+	{
+		assert(start_ != nullptr);
+		assert(end_ != nullptr);
+	}
 	Channel::~Channel() {}
 	void Channel::print() const
 	{
 		printf("channel ");
-		if(start_ == nullptr)
-		{
-			printf("source");
-		}
-		else
-		{
-			start_->printAddress();
-		}
+		printAddress(start_->address());
 		printf(" --> ");
-		if(end_ == nullptr)
-		{
-			printf("destination");
-		}
-		else
-		{
-			end_->printAddress();
-		}
+		printAddress(end_->address());
 		printf("\n");
 	}
 	bool Channel::push(Packet* packet)
@@ -103,6 +94,26 @@ namespace network
 	unsigned Channel::bufferSize() const
 	{
 		return bufferSize_;
+	}
+	Node* Channel::start() const
+	{
+		return start_;
+	}
+	Node* Channel::end() const
+	{
+		return end_;
+	}
+	bool Channel::pushable() const
+	{
+		return (inBuffer_.size() < bufferSize_);
+	}
+	bool Channel::poppable() const
+	{
+		return (outBuffer_.size() > 0);
+	}
+	unsigned Channel::pushLoad() const
+	{
+		return outBuffer_.size();
 	}
 }
 

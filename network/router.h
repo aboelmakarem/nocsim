@@ -26,6 +26,7 @@ SOFTWARE.
 #ifndef ROUTER_H_
 #define ROUTER_H_
 
+#include "node.h"
 #include "packet.h"
 #include "channel.h"
 #include <vector>
@@ -33,9 +34,7 @@ SOFTWARE.
 
 namespace network
 {
-	typedef std::vector<unsigned> Address;
-
-	class Router
+	class Router : public Node
 	{
 	public:
 		Router(Address address);
@@ -44,21 +43,12 @@ namespace network
 		virtual ~Router();
 		Router& operator=(const Router& router) = delete;
 		Router& operator=(Router&& router) = delete;
-		void addInChannel(Channel* channel);
-		void addOutChannel(Channel* channel);
-		const std::vector<unsigned>& address() const;
-		bool inject(Packet* packet);
-		virtual void update(unsigned time) = 0;
-		void print() const;
-		void printAddress() const;
-
+		NodeType type() const;
+		virtual void print() const = 0;
+		
 	protected:
-		void send(Packet* packet);
-		void receive(Packet* packet);
-		Packet* eject(Packet* packet);
-		Address address_;
-		std::list<Channel*> inChannels_;
-		std::list<Channel*> outChannels_;
+		virtual void send(Packet* packet) = 0;
+		virtual void route(Packet* packet) = 0;
 	};
 
 	class TorusRouter : public Router
@@ -70,10 +60,21 @@ namespace network
 		~TorusRouter();
 		TorusRouter& operator=(const TorusRouter& router) = delete;
 		TorusRouter& operator=(TorusRouter&& router) = delete;
+		void print() const;
+		void addInChannel(Channel* channel);
+		void addOutChannel(Channel* channel);
 		void update(unsigned time);
 
 	private:
-		void route(const Packet* packet) const;
+		void send(Packet* packet);
+		void route(Packet* packet);
+		Channel* pickRoutingChannel(const Packet* packet) const;
+		Channel* outTerminal_{nullptr};
+		Channel* inTerminal_{nullptr};
+		std::vector<Channel*> outPositiveChannels_;
+		std::vector<Channel*> inPositiveChannels_;
+		std::vector<Channel*> outNegativeChannels_;
+		std::vector<Channel*> inNegativeChannels_;
 	};
 }
 

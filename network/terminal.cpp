@@ -1,6 +1,6 @@
-/* 	packet.h
+/* 	terminal.cpp
 	Ahmed Hussein (amhussein4@gmail.com)
-	04/02/2024
+	04/01/2024
 
 Copyright (c) 2024 Ahmed M. Hussein (amhussein4@gmail.com)
 
@@ -23,31 +23,54 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PACKET_H_
-#define PACKET_H_
-
-#include "address.h"
+#include "terminal.h"
+#include "stdio.h"
+#include <cassert>
 
 namespace network
 {
-	class Packet
+	Terminal::Terminal(Address address) : Node(address) {}
+	Terminal::~Terminal() {}
+	NodeType Terminal::type() const
 	{
-	public:
-		Packet(unsigned id,unsigned size,const Address address);
-		Packet(const Packet& packet) = delete;
-		Packet(Packet&& packet) = delete;
-		~Packet();
-		Packet& operator=(const Packet& packet) = delete;
-		Packet& operator=(Packet&& packet) = delete;
-		unsigned id() const;
-		unsigned size() const;
-		const Address& destination() const;
-
-	private:
-		unsigned id_{0};
-		unsigned size_{0};
-		Address destination_;
-	};
+		return NodeType::Terminal;
+	}
+	void Terminal::addInChannel(Channel* channel)
+	{
+		assert(channel != nullptr);
+		assert(address_ == channel->end()->address());
+		assert(inChannel_ == nullptr);
+		inChannel_ = channel;
+	}
+	void Terminal::addOutChannel(Channel* channel)
+	{
+		assert(channel != nullptr);
+		assert(address_ == channel->start()->address());
+		assert(outChannel_ == nullptr);
+		outChannel_ = channel;
+	}
+	void Terminal::update(unsigned time)
+	{
+		// eject packets from in channel if there are that are 
+		// ready
+		if(!inChannel_->poppable())
+		{
+			return;
+		}
+		Packet* packet = inChannel_->pop();
+		printf("terminal ");
+		printAddress(address_);
+		printf(" received packet %u\n",packet->id());
+		delete packet;
+	}
+	void Terminal::print() const
+	{
+		printf("terminal @ ");
+		printAddress(address_);
+		printf("\n\tin channel:\t");
+		inChannel_->print();
+		printf("\n\tout channel:\t");
+		outChannel_->print();
+	}
 }
 
-#endif

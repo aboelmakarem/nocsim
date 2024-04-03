@@ -1,6 +1,6 @@
-/* 	packet.h
+/* 	node.h
 	Ahmed Hussein (amhussein4@gmail.com)
-	04/02/2024
+	04/03/2024
 
 Copyright (c) 2024 Ahmed M. Hussein (amhussein4@gmail.com)
 
@@ -23,30 +23,37 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PACKET_H_
-#define PACKET_H_
+#ifndef NODE_H_
+#define NODE_H_
 
 #include "address.h"
+#include "channel.h"
 
 namespace network
 {
-	class Packet
+	enum class NodeType
+	{
+		Terminal,
+		Router
+	};
+
+	class Node
 	{
 	public:
-		Packet(unsigned id,unsigned size,const Address address);
-		Packet(const Packet& packet) = delete;
-		Packet(Packet&& packet) = delete;
-		~Packet();
-		Packet& operator=(const Packet& packet) = delete;
-		Packet& operator=(Packet&& packet) = delete;
-		unsigned id() const;
-		unsigned size() const;
-		const Address& destination() const;
+		Node(Address address);
+		Node(const Node& node) = delete;
+		Node(Node&& node) = delete;
+		virtual ~Node();
+		Node& operator=(const Node& node) = delete;
+		Node& operator=(Node&& node) = delete;
+		const Address& address() const;
+		virtual NodeType type() const = 0;
+		virtual void addInChannel(Channel* channel) = 0;
+		virtual void addOutChannel(Channel* channel) = 0;
+		virtual void update(unsigned timestep) = 0;
 
-	private:
-		unsigned id_{0};
-		unsigned size_{0};
-		Address destination_;
+	protected:
+		Address address_;
 	};
 }
 

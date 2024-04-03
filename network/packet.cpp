@@ -24,13 +24,20 @@ SOFTWARE.
 */
 
 #include "packet.h"
-#include "router.h"
 
 namespace network
 {
-	Packet::Packet(unsigned size,Router* destination) : size_(size), destination_(destination) {}
+	Packet::Packet(unsigned id,unsigned size,const Address destination) : id_(id), size_(size), destination_(destination) {}
 	Packet::~Packet() {}
-	const Router* Packet::destination() const
+	unsigned Packet::id() const
+	{
+		return id_;
+	}
+	unsigned Packet::size() const
+	{
+		return size_;
+	}
+	const Address& Packet::destination() const
 	{
 		return destination_;
 	}

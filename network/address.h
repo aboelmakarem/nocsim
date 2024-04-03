@@ -1,6 +1,6 @@
-/* 	packet.h
+/* 	address.h
 	Ahmed Hussein (amhussein4@gmail.com)
-	04/02/2024
+	04/03/2024
 
 Copyright (c) 2024 Ahmed M. Hussein (amhussein4@gmail.com)
 
@@ -23,31 +23,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PACKET_H_
-#define PACKET_H_
+#ifndef ADDRESS_H_
+#define ADDRESS_H_
 
-#include "address.h"
+#include <vector>
 
 namespace network
 {
-	class Packet
-	{
-	public:
-		Packet(unsigned id,unsigned size,const Address address);
-		Packet(const Packet& packet) = delete;
-		Packet(Packet&& packet) = delete;
-		~Packet();
-		Packet& operator=(const Packet& packet) = delete;
-		Packet& operator=(Packet&& packet) = delete;
-		unsigned id() const;
-		unsigned size() const;
-		const Address& destination() const;
+	typedef std::vector<int> Address;
 
-	private:
-		unsigned id_{0};
-		unsigned size_{0};
-		Address destination_;
-	};
+	bool operator==(const Address& address1,const Address& address2);
+	void printAddress(const Address& address);
+	unsigned manhattanDistance(const Address& address1,const Address& address2);
+	int addressAdjacency(const Address& address1,const Address& address2);
 }
 
 #endif

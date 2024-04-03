@@ -31,12 +31,12 @@ SOFTWARE.
 
 namespace network
 {
-	class Router;
+	class Node;
 
 	class Channel
 	{
 	public:
-		Channel(unsigned width,unsigned bufferSize,Router* start,Router* end);
+		Channel(unsigned width,unsigned bufferSize,Node* start,Node* end);
 		Channel(const Channel& channel) = delete;
 		Channel(Channel&& channel) = delete;
 		~Channel();
@@ -49,11 +49,16 @@ namespace network
 		Packet* frontPacket() const;
 		unsigned width() const;
 		unsigned bufferSize() const;
+		Node* start() const;
+		Node* end() const;
+		bool pushable() const;
+		bool poppable() const;
+		unsigned pushLoad() const;
 
 	private:
 		unsigned width_{0};
-		Router* start_{nullptr};
-		Router* end_{nullptr};
+		Node* start_{nullptr};
+		Node* end_{nullptr};
 		std::list<Packet*> inBuffer_;
 		std::list<Packet*> outBuffer_;
 		unsigned bufferSize_{0};

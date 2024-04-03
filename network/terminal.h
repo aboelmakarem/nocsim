@@ -1,6 +1,6 @@
-/* 	packet.h
+/* 	terminal.h
 	Ahmed Hussein (amhussein4@gmail.com)
-	04/02/2024
+	04/01/2024
 
 Copyright (c) 2024 Ahmed M. Hussein (amhussein4@gmail.com)
 
@@ -23,30 +23,32 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PACKET_H_
-#define PACKET_H_
+#ifndef TERMINAL_H_
+#define TERMINAL_H_
 
-#include "address.h"
+#include "node.h"
+#include "channel.h"
 
 namespace network
 {
-	class Packet
+	class Terminal : public Node
 	{
 	public:
-		Packet(unsigned id,unsigned size,const Address address);
-		Packet(const Packet& packet) = delete;
-		Packet(Packet&& packet) = delete;
-		~Packet();
-		Packet& operator=(const Packet& packet) = delete;
-		Packet& operator=(Packet&& packet) = delete;
-		unsigned id() const;
-		unsigned size() const;
-		const Address& destination() const;
-
+		Terminal(Address address);
+		Terminal(const Terminal& terminal) = delete;
+		Terminal(Terminal&& terminal) = delete;
+		~Terminal();
+		Terminal& operator=(const Terminal& terminal) = delete;
+		Terminal& operator=(Terminal&& terminal) = delete;
+		NodeType type() const;
+		void addInChannel(Channel* channel);
+		void addOutChannel(Channel* channel);
+		void update(unsigned time);
+		void print() const;
+		
 	private:
-		unsigned id_{0};
-		unsigned size_{0};
-		Address destination_;
+		Channel* inChannel_{nullptr};
+		Channel* outChannel_{nullptr};
 	};
 }
 

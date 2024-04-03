@@ -26,8 +26,9 @@ SOFTWARE.
 #ifndef NETWORK_H_
 #define NETWORK_H_
 
-#include "channel.h"
+#include "terminal.h"
 #include "router.h"
+#include "channel.h"
 #include <vector>
 
 namespace network
@@ -46,6 +47,8 @@ namespace network
 		void runRandomTrafficLoad(unsigned totalTime,float loadFactor);
 
 	protected:
+		void collapse();
+		std::vector<Terminal*> terminals_;
 		std::vector<Router*> routers_;
 		std::vector<Channel*> channels_;
 	};
@@ -66,10 +69,7 @@ namespace network
 	private:
 		void indexToAddress(unsigned index,Address& address) const;
 		unsigned addressToIndex(const Address& address) const;
-		unsigned dimensionality_{1};
 		std::vector<unsigned> sizes_;
-		unsigned routerCount_{0};
-		unsigned channelCount_{0};
 	};
 }
 

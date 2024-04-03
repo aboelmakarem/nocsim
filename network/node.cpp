@@ -1,6 +1,6 @@
-/* 	packet.h
+/* 	node.cpp
 	Ahmed Hussein (amhussein4@gmail.com)
-	04/02/2024
+	04/03/2024
 
 Copyright (c) 2024 Ahmed M. Hussein (amhussein4@gmail.com)
 
@@ -23,31 +23,15 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PACKET_H_
-#define PACKET_H_
-
-#include "address.h"
+#include "node.h"
 
 namespace network
 {
-	class Packet
+	Node::Node(Address address) : address_(address) {}
+	Node::~Node() {}
+	const Address& Node::address() const
 	{
-	public:
-		Packet(unsigned id,unsigned size,const Address address);
-		Packet(const Packet& packet) = delete;
-		Packet(Packet&& packet) = delete;
-		~Packet();
-		Packet& operator=(const Packet& packet) = delete;
-		Packet& operator=(Packet&& packet) = delete;
-		unsigned id() const;
-		unsigned size() const;
-		const Address& destination() const;
-
-	private:
-		unsigned id_{0};
-		unsigned size_{0};
-		Address destination_;
-	};
+		return address_;
+	}
 }
 
-#endif

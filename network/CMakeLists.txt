@@ -24,8 +24,11 @@
 #SOFTWARE.
 #
 
-add_library(network STATIC 	packet.cpp
+add_library(network STATIC 	address.cpp
+							packet.cpp
 							channel.cpp
+							node.cpp
+							terminal.cpp
 							router.cpp
 							network.cpp)
-
+target_include_directories(network PUBLIC ${PROJECT_SOURCE_DIR}/base)
