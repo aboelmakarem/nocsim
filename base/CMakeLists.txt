@@ -24,8 +24,5 @@
 #SOFTWARE.
 #
 
-add_library(network STATIC 	packet.cpp
-							channel.cpp
-							router.cpp
-							network.cpp)
+add_library(base STATIC 	random.cpp)
 

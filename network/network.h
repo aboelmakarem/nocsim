@@ -43,7 +43,7 @@ namespace network
 		Network& operator=(Network&& network) = delete;
 		virtual void build(unsigned channelWidth,unsigned bufferSize) = 0;
 		virtual void update(unsigned timestep) = 0;
-		void runRandomTrafficLoad(unsigned totalTime);
+		void runRandomTrafficLoad(unsigned totalTime,float loadFactor);
 
 	protected:
 		std::vector<Router*> routers_;

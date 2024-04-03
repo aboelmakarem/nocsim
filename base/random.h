@@ -1,8 +1,8 @@
-/* 	packet.h
-	Ahmed Hussein (amhussein4@gmail.com)
-	04/02/2024
+/*	Random.h
+	Ahmed M. Hussein (amhussein4@gmail.com)
+	04/30/2022
 
-Copyright (c) 2024 Ahmed M. Hussein (amhussein4@gmail.com)
+Copyright (c) 2013 Ahmed M. Hussein (amhussein4@gmail.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -23,29 +23,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef PACKET_H_
-#define PACKET_H_
+#ifndef RANDOM_H_
+#define RANDOM_H_
 
-namespace network
-{
-	class Router;
-	class Packet
-	{
-	public:
-		Packet(unsigned id,unsigned size,Router* destination);
-		Packet(const Packet& packet) = delete;
-		Packet(Packet&& packet) = delete;
-		~Packet();
-		Packet& operator=(const Packet& packet) = delete;
-		Packet& operator=(Packet&& packet) = delete;
-		unsigned id() const;
-		const Router* destination() const;
+// random number generation library functions
 
-	private:
-		unsigned id_{0};
-		unsigned size_{0};
-		Router* destination_{nullptr};
-	};
-}
+double rand_uniform();
+double rand_uniform_interval(double min,double max);
+int rand_int(int min,int max);
+int rand_sign();
+double rand_std_normal();
+double rand_normal(double mean,double standard_deviation);
+double rand_exponential(double mean);
+void rand_shuffle(unsigned int size,unsigned int* shuffled_array,unsigned int passes);
+void rand_seed(unsigned int seed);
 
 #endif
+
